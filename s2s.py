@@ -2,6 +2,9 @@
 
 __author__ = 'qhduan@memect.co'
 
+# python.exe D:/git/DeepLearning/chatbot/Seq2Seq_Chatbot_QA/s2s.py --size 512 --num_layers 2 --num_epoch 5 --batch_size 64 --num_per_epoch 500000 --model_dir ./model/model1
+# python.exe D:/git/DeepLearning/chatbot/Seq2Seq_Chatbot_QA/s2s.py --size 512 --num_layers 2 --num_epoch 5 --batch_size 64 --num_per_epoch 500000 --model_dir ./model/model1 --test True
+# python.exe D:/git/DeepLearning/chatbot/Seq2Seq_Chatbot_QA/s2s.py --size 512 --num_layers 2 --num_epoch 5 --batch_size 64 --num_per_epoch 500000 --model_dir ./model/model1 --test False --bleu 1000
 import os
 import sys
 import math
@@ -128,7 +131,7 @@ def train():
         #　构建模型
         model = create_model(sess, False)
         # 初始化变量
-        sess.run(tf.initialize_all_variables())
+        sess.run(tf.global_variables_initializer())
         buckets_scale = [
             sum(bucket_sizes[:i + 1]) / total_size
             for i in range(len(bucket_sizes))
@@ -221,7 +224,7 @@ def test_bleu(count):
         model = create_model(sess, True)
         model.batch_size = 1
         # 初始化变量
-        sess.run(tf.initialize_all_variables())
+        sess.run(tf.global_variables_initializer())
         model.saver.restore(sess, os.path.join(FLAGS.model_dir, FLAGS.model_name))
 
         total_score = 0.0
@@ -276,7 +279,7 @@ def test():
         model = create_model(sess, True)
         model.batch_size = 1
         # 初始化变量
-        sess.run(tf.initialize_all_variables())
+        sess.run(tf.global_variables_initializer())
         model.saver.restore(sess, os.path.join(FLAGS.model_dir, FLAGS.model_name))
         sys.stdout.write("> ")
         sys.stdout.flush()

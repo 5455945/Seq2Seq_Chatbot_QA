@@ -166,7 +166,7 @@ class S2SModel(object):
                 ))
         # self.saver = tf.train.Saver(tf.all_variables())
         self.saver = tf.train.Saver(
-            tf.all_variables(),
+            tf.global_variables(),
             write_version=tf.train.SaverDef.V2
         )
 
